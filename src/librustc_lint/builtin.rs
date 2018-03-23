@@ -1087,6 +1087,16 @@ impl<'a, 'tcx> LateLintPass<'a, 'tcx> for InvalidNoMangleItems {
                             err.span_suggestion(insertion_span,
                                                 "try making it public",
                                                 "pub ".to_owned());
+                        } else {
+                            if cx.access_levels.is_exported(it.id) {
+                                err.span_suggestion(insertion_span,
+                                                    "FMQ: is exported",
+                                                    "FOO ".to_owned());
+                            } else {
+                                err.span_suggestion(insertion_span,
+                                                    "FMQ: not exported",
+                                                    "FOO ".to_owned());
+                            }
                         }
                         err.emit();
                     }
